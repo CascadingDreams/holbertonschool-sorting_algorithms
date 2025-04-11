@@ -1,42 +1,59 @@
 #include "sort.h"
-#include "swap.c"
 
 /**
- * lomuto_partition - Partitions the array using the Lomuto scheme
+ * swap_ints - Swap two integers if they are different
+ * @a: First integer
+ * @b: Second integer
+ * Return: 1 if swap, 0 if nothing
+ */
+int swap_ints(int *a, int *b)
+{
+	if (*a != *b)
+	{
+		int temp = *a;
+		*a = *b;
+		*b = temp;
+		return (1); /* Swap occurred */
+	}
+	return (0); /* No swap */
+}
+
+/**
+ * lomuto_partition - Lomuto partition scheme
  * @array: Array to partition
  * @low: Starting index
  * @high: Ending index
- * @size: Size of the full array (for printing)
- * Return: Index of pivot after partition
+ * @size: Total size of array (for print)
+ * Return: Final position of pivot
  */
 int lomuto_partition(int *array, int low, int high, size_t size)
 {
 	int pivot = array[high];
-	int i = low - 1;
-	int j;
+	int i = low - 1, j;
+	int did_swap;
 
 	for (j = low; j < high; j++)
 	{
 		if (array[j] < pivot)
 		{
 			i++;
-			swap(&array[i], &array[j]);
-			if (i != j)
+			did_swap = swap_ints(&array[i], &array[j]);
+			if (did_swap)
 				print_array(array, size);
 		}
 	}
-	swap(&array[i + 1], &array[high]);
-	if (i + 1 != high)
+	did_swap = swap_ints(&array[i + 1], &array[high]);
+	if (did_swap)
 		print_array(array, size);
 	return (i + 1);
 }
 
 /**
- * quicksort - Recursively sorts the array using quick sort
- * @array: The array
+ * quicksort - Recursive Quick Sort
+ * @array: Array to sort
  * @low: Starting index
  * @high: Ending index
- * @size: Total size of the array
+ * @size: Total size of array
  */
 void quicksort(int *array, int low, int high, size_t size)
 {
@@ -51,14 +68,13 @@ void quicksort(int *array, int low, int high, size_t size)
 }
 
 /**
- * quick_sort - Sorts an array using the Quick sort algorithm
- * @array: Array of integers
- * @size: Size of the array
+ * quick_sort - Sort array of integers in ascending order
+ * @array: Array to sort
+ * @size: Size of array
  */
 void quick_sort(int *array, size_t size)
 {
 	if (!array || size < 2)
 		return;
-
 	quicksort(array, 0, size - 1, size);
 }
