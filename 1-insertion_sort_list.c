@@ -1,22 +1,31 @@
 #include "sort.h"
+#include "swap_linked_list.c"
 
 /**
  * insertion_sort_list - insertion sort linked list
  * @list: pointer to pointer of list to SORT_H
- * 
+ *
  * Return: list
  */
 void insertion_sort_list(listint_t **list)
 {
-	int i, j;
-	
-}
-/* for (int i = 1; i < n; ++i) {
-	int key = arr[i];
-	int j = i - 1;
+	listint_t *current, *temp;
 
-	while (j >= 0 && arr[j] > key) {
-		arr[j + 1] = arr[j];
-		j = j - 1;
+	if (!list || !*list || !(*list)->next)
+	{
+		return;
 	}
-	arr[j + 1] = key; */
+
+	current = (*list)->next;
+
+	while (current)
+	{
+		temp = current;
+		while (temp->prev && temp->n < temp->prev->n)
+		{
+			swap_linked_list(list, temp->prev, temp);
+			print_list(*list);
+		}
+		current = temp->next;
+	}
+}
